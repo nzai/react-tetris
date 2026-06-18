@@ -4,7 +4,7 @@ import classnames from 'classnames';
 import propTypes from 'prop-types';
 
 import style from './index.less';
-import { isClear } from '../../unit/';
+import { isClear, want } from '../../unit/';
 import { fillLine, blankLine } from '../../unit/const';
 import states from '../../control/states';
 
@@ -88,8 +88,36 @@ export default class Matrix extends React.Component {
           }
         })
       ));
+      const ghostY = this.getGhostY(cur, props.matrix);
+      if (ghostY !== xy.get(0)) {
+        shape.forEach((m, k1) => (
+          m.forEach((n, k2) => {
+            if (n && ghostY + k1 >= 0) {
+              const row = ghostY + k1;
+              const col = xy.get(1) + k2;
+              const line = matrix.get(row);
+              if (line.get(col) === 0) {
+                matrix = matrix.set(row, line.set(col, 3));
+              }
+            }
+          })
+        ));
+      }
     }
     return matrix;
+  }
+  getGhostY(cur, matrix) {
+    if (!cur) return -1;
+    const shape = cur.shape;
+    const x = cur.xy.get(0);
+    const y = cur.xy.get(1);
+    let ghostY = x;
+    const testNext = { shape, xy: [ghostY + 1, y] };
+    while (want(testNext, matrix)) {
+      ghostY++;
+      testNext.xy[0] = ghostY + 1;
+    }
+    return ghostY;
   }
   clearAnimate() {
     const anima = (callback) => {
@@ -156,6 +184,7 @@ export default class Matrix extends React.Component {
                 className={classnames({
                   c: e === 1,
                   d: e === 2,
+                  e: e === 3,
                 })}
                 key={k2}
               />)

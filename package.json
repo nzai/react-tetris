@@ -4,7 +4,7 @@
   "description": "使用React、Redux、Immutable编写「俄罗斯方块」。Use Tetact, Redux, Immutable to coding \"Tetris\".",
   "scripts": {
     "start": "webpack-dev-server --progress",
-    "build": "rm -rf ./docs/* && webpack --config ./webpack.production.config.js --progress && ls ./docs"
+    "build": "del /S/Q docs && webpack --config ./webpack.production.config.js --progress && dir docs"
   },
   "repository": {
     "type": "git",
@@ -20,9 +20,9 @@
   "author": "Chvin",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/chvin/react-tetris/issues"
+    "url": "https://github.com/nzai/react-tetris/issues"
   },
-  "homepage": "https://github.com/chvin/react-tetris#readme",
+  "homepage": "https://github.com/nzai/react-tetris#readme",
   "devDependencies": {
     "autoprefixer": "^6.7.2",
     "babel-core": "^6.13.2",

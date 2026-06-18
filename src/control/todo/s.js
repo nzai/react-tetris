@@ -1,5 +1,6 @@
 import event from '../../unit/event';
 import actions from '../../actions';
+import { music } from '../../unit/music';
 
 const down = (store) => {
   store.dispatch(actions.keyboard.music(true));
@@ -13,7 +14,18 @@ const down = (store) => {
       if (store.getState().get('lock')) {
         return;
       }
-      store.dispatch(actions.music(!store.getState().get('music')));
+      const newMusic = !store.getState().get('music');
+      store.dispatch(actions.music(newMusic));
+      if (newMusic) {
+        const state = store.getState();
+        if (state.get('cur') && !state.get('reset') && !state.get('pause')) {
+          if (music.bgmStart) {
+            music.bgmStart();
+          }
+        }
+      } else if (music.bgmStop) {
+        music.bgmStop();
+      }
     },
   });
 };

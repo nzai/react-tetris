@@ -15,16 +15,23 @@ const hasWebAudioAPI = {
 
 
 const music = {};
+let bgmBuffer = null;
+let bgmSource = null;
 
 (() => {
   if (!hasWebAudioAPI.data) {
     return;
   }
   const url = './music.mp3';
+  const bgmUrl = './bgm.mp3';
   const context = new AudioContext();
   const req = new XMLHttpRequest();
   req.open('GET', url, true);
   req.responseType = 'arraybuffer';
+
+  const bgmReq = new XMLHttpRequest();
+  bgmReq.open('GET', bgmUrl, true);
+  bgmReq.responseType = 'arraybuffer';
 
   req.onload = () => {
     context.decodeAudioData(req.response, (buf) => { // 将拿到的audio解码转为buffer
@@ -90,7 +97,41 @@ const music = {};
     });
   };
 
+  bgmReq.onload = () => {
+    context.decodeAudioData(bgmReq.response, (buf) => {
+      bgmBuffer = buf;
+    },
+    (error) => {
+      if (window.console && window.console.error) {
+        window.console.error(`音频: ${bgmUrl} 读取错误`, error);
+      }
+    });
+  };
+
+  music.bgmStart = () => {
+    if (!store.getState().get('music') || !bgmBuffer) {
+      return;
+    }
+    if (bgmSource) {
+      try { bgmSource.stop(); } catch (e) {} // eslint-disable-line
+    }
+    const source = context.createBufferSource();
+    source.buffer = bgmBuffer;
+    source.loop = true;
+    source.connect(context.destination);
+    source.start(0);
+    bgmSource = source;
+  };
+
+  music.bgmStop = () => {
+    if (bgmSource) {
+      try { bgmSource.stop(); } catch (e) {} // eslint-disable-line
+      bgmSource = null;
+    }
+  };
+
   req.send();
+  bgmReq.send();
 })();
 
 module.exports = {

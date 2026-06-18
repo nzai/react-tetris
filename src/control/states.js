@@ -40,12 +40,18 @@ const getStartMatrix = (startLines) => { // 生成startLines
 const states = {
   // 自动下落setTimeout变量
   fallInterval: null,
+  bgmTimer: null,
 
   // 游戏开始
   start: () => {
     if (music.start) {
       music.start();
     }
+    states.bgmTimer = setTimeout(() => {
+      if (music.bgmStart) {
+        music.bgmStart();
+      }
+    }, 3400);
     const state = store.getState();
     states.dispatchPoints(0);
     store.dispatch(actions.speedRun(state.get('speedStart')));
@@ -143,7 +149,14 @@ const states = {
     store.dispatch(actions.pause(isPause));
     if (isPause) {
       clearTimeout(states.fallInterval);
+      clearTimeout(states.bgmTimer);
+      if (music.bgmStop) {
+        music.bgmStop();
+      }
       return;
+    }
+    if (music.bgmStart) {
+      music.bgmStart();
     }
     states.auto();
   },
@@ -177,6 +190,10 @@ const states = {
   // 游戏结束, 触发动画
   overStart: () => {
     clearTimeout(states.fallInterval);
+    clearTimeout(states.bgmTimer);
+    if (music.bgmStop) {
+      music.bgmStop();
+    }
     store.dispatch(actions.lock(true));
     store.dispatch(actions.reset(true));
     store.dispatch(actions.pause(false));
