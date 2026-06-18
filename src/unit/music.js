@@ -97,6 +97,23 @@ let bgmSource = null;
     });
   };
 
+  const resumeContext = () => {
+    if (context.state === 'suspended') {
+      context.resume();
+    }
+  };
+
+  // 移动端浏览器需要用户交互才能恢复 AudioContext
+  const firstInteraction = () => {
+    resumeContext();
+    document.removeEventListener('touchstart', firstInteraction, true);
+    document.removeEventListener('mousedown', firstInteraction, true);
+    document.removeEventListener('keydown', firstInteraction, true);
+  };
+  document.addEventListener('touchstart', firstInteraction, true);
+  document.addEventListener('mousedown', firstInteraction, true);
+  document.addEventListener('keydown', firstInteraction, true);
+
   bgmReq.onload = () => {
     context.decodeAudioData(bgmReq.response, (buf) => {
       bgmBuffer = buf;
@@ -112,6 +129,7 @@ let bgmSource = null;
     if (!store.getState().get('music') || !bgmBuffer) {
       return;
     }
+    resumeContext();
     if (bgmSource) {
       try { bgmSource.stop(); } catch (e) {} // eslint-disable-line
     }
