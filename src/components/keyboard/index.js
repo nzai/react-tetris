@@ -1,6 +1,7 @@
 import React from 'react';
 import Immutable from 'immutable';
 import propTypes from 'prop-types';
+import classnames from 'classnames';
 
 import style from './index.less';
 import Button from './button';
@@ -9,10 +10,14 @@ import todo from '../../control/todo';
 import { i18n, lan } from '../../unit/const';
 
 export default class Keyboard extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      leftHanded: false,
+    };
+  }
   componentDidMount() {
-    const touchEventCatch = {}; // 对于手机操作, 触发了touchstart, 将作出记录, 不再触发后面的mouse事件
-
-    // 在鼠标触发mousedown时, 移除元素时可以不触发mouseup, 这里做一个兼容, 以mouseout模拟mouseup
+    const touchEventCatch = {};
     const mouseDownEventCatch = {};
     document.addEventListener('touchstart', (e) => {
       if (e.preventDefault) {
@@ -20,14 +25,12 @@ export default class Keyboard extends React.Component {
       }
     }, true);
 
-    // 解决issue: https://github.com/chvin/react-tetris/issues/24
     document.addEventListener('touchend', (e) => {
       if (e.preventDefault) {
         e.preventDefault();
       }
     }, true);
 
-    // 阻止双指放大
     document.addEventListener('gesturestart', (e) => {
       if (e.preventDefault) {
         event.preventDefault();
@@ -40,9 +43,13 @@ export default class Keyboard extends React.Component {
       }
     }, true);
 
+    const gameActions = ['left', 'right', 'down', 'rotate', 'space'];
     Object.keys(todo).forEach((key) => {
       this[`dom_${key}`].dom.addEventListener('mousedown', () => {
         if (touchEventCatch[key] === true) {
+          return;
+        }
+        if (gameActions.indexOf(key) !== -1 && !store.getState().get('cur')) {
           return;
         }
         todo[key].down(store);
@@ -62,6 +69,9 @@ export default class Keyboard extends React.Component {
         }
       }, true);
       this[`dom_${key}`].dom.addEventListener('touchstart', () => {
+        if (gameActions.indexOf(key) !== -1 && !store.getState().get('cur')) {
+          return;
+        }
         touchEventCatch[key] = true;
         todo[key].down(store);
       }, true);
@@ -70,101 +80,88 @@ export default class Keyboard extends React.Component {
       }, true);
     });
   }
-  shouldComponentUpdate({ keyboard, filling }) {
-    return !Immutable.is(keyboard, this.props.keyboard) || filling !== this.props.filling;
+  shouldComponentUpdate({ keyboard, filling }, nextState) {
+    return !Immutable.is(keyboard, this.props.keyboard) || filling !== this.props.filling
+      || (nextState && nextState.leftHanded !== this.state.leftHanded);
   }
   render() {
     const keyboard = this.props.keyboard;
+    const leftHanded = this.state.leftHanded;
+    const swap = () => {
+      if (!store.getState().get('cur')) {
+        this.setState({ leftHanded: !leftHanded });
+      }
+    };
     return (
-      <div
-        className={style.keyboard}
-        style={{
-          marginTop: 20 + this.props.filling,
-        }}
-      >
-        <Button
-          color="blue"
-          size="s1"
-          top={0}
-          left={374}
-          label={i18n.rotation[lan]}
-          arrow="translate(0, 63px)"
-          position
-          active={keyboard.get('rotate')}
-          ref={(c) => { this.dom_rotate = c; }}
-        />
-        <Button
-          color="blue"
-          size="s1"
-          top={180}
-          left={374}
-          label={i18n.down[lan]}
-          arrow="translate(0,-71px) rotate(180deg)"
-          active={keyboard.get('down')}
-          ref={(c) => { this.dom_down = c; }}
-        />
-        <Button
-          color="blue"
-          size="s1"
-          top={90}
-          left={284}
-          label={i18n.left[lan]}
-          arrow="translate(60px, -12px) rotate(270deg)"
-          active={keyboard.get('left')}
-          ref={(c) => { this.dom_left = c; }}
-        />
-        <Button
-          color="blue"
-          size="s1"
-          top={90}
-          left={464}
-          label={i18n.right[lan]}
-          arrow="translate(-60px, -12px) rotate(90deg)"
-          active={keyboard.get('right')}
-          ref={(c) => { this.dom_right = c; }}
-        />
-        <Button
-          color="blue"
-          size="s0"
-          top={100}
-          left={52}
-          label={`${i18n.drop[lan]} (SPACE)`}
-          active={keyboard.get('drop')}
-          ref={(c) => { this.dom_space = c; }}
-        />
-        <Button
-          color="red"
-          size="s2"
-          top={0}
-          left={196}
-          label={`${i18n.reset[lan]}(R)`}
-          active={keyboard.get('reset')}
-          ref={(c) => { this.dom_r = c; }}
-        />
-        <Button
-          color="green"
-          size="s2"
-          top={0}
-          left={106}
-          label={`${i18n.sound[lan]}(S)`}
-          active={keyboard.get('music')}
-          ref={(c) => { this.dom_s = c; }}
-        />
-        <Button
-          color="green"
-          size="s2"
-          top={0}
-          left={16}
-          label={`${i18n.pause[lan]}(P)`}
-          active={keyboard.get('pause')}
-          ref={(c) => { this.dom_p = c; }}
-        />
+      <div className={classnames(style.keyboard, { [style.swap]: leftHanded })}>
+        <div className={style.dpad}>
+          <div className={style.dpadRow}>
+            <Button
+              color="blue" size="s2" staticPos label=""
+              active={keyboard.get('left')}
+              ref={(c) => { this.dom_left = c; }}
+            />
+            <span />
+            <Button
+              color="blue" size="s2" staticPos label=""
+              active={keyboard.get('right')}
+              ref={(c) => { this.dom_right = c; }}
+            />
+          </div>
+          <div className={style.dpadRow}>
+            <span />
+            <Button
+              color="blue" size="s2" staticPos label=""
+              active={keyboard.get('down')}
+              ref={(c) => { this.dom_down = c; }}
+            />
+            <span />
+          </div>
+        </div>
+        <div
+          className={classnames(style.swapBtn, {
+            [style.swapBtnDisabled]: !!store.getState().get('cur'),
+          })}
+          onMouseDown={swap}
+          onTouchStart={swap}
+        >
+          ⇄
+        </div>
+        <div className={style.actions}>
+          <Button
+            color="blue" size="s2" staticPos label={i18n.drop[lan]}
+            active={keyboard.get('drop')}
+            ref={(c) => { this.dom_space = c; }}
+          />
+          <Button
+            color="blue" size="s2" staticPos label={i18n.rotation[lan]}
+            active={keyboard.get('rotate')}
+            ref={(c) => { this.dom_rotate = c; }}
+          />
+        </div>
+        <div style={{ display: 'none' }}>
+          <Button
+            color="green" size="s2" staticPos label=""
+            active={keyboard.get('pause')}
+            ref={(c) => { this.dom_p = c; }}
+          />
+          <Button
+            color="green" size="s2" staticPos label=""
+            active={keyboard.get('music')}
+            ref={(c) => { this.dom_s = c; }}
+          />
+          <Button
+            color="red" size="s2" staticPos label=""
+            active={keyboard.get('reset')}
+            ref={(c) => { this.dom_r = c; }}
+          />
+        </div>
       </div>
     );
   }
 }
 
 Keyboard.propTypes = {
-  filling: propTypes.number.isRequired,
+  filling: propTypes.number,
   keyboard: propTypes.object.isRequired,
 };

@@ -57,10 +57,10 @@
       "fa": "پاک کرد"
     },
     "level": {
-      "cn": "级别",
-      "en": "Level",
-      "fr": "Difficulté",
-      "fa": "سطح"
+      "cn": "速度",
+      "en": "Speed",
+      "fr": "Vitesse",
+      "fa": "سرعت"
     },
     "startLine": {
       "cn": "起始行",
@@ -121,6 +121,18 @@
       "en": "Drop",
       "fr": "Tomber",
       "fa": "سقوط"
+    },
+    "start": {
+      "cn": "开始游戏",
+      "en": "Start",
+      "fr": "Commencer",
+      "fa": "شروع"
+    },
+    "continue": {
+      "cn": "继续",
+      "en": "Continue",
+      "fr": "Continuer",
+      "fa": "ادامه"
     }
   }
 }

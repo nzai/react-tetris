@@ -1,6 +1,52 @@
 .keyboard{
-  width: 580px;
-  height: 330px;
-  margin: 20px auto 0;
-  position:relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 4px 8px 0;
+  &.swap {
+    flex-direction: row-reverse;
+  }
+}
+
+.dpad {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.dpadRow {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+  span {
+    display: block;
+    width: 52px;
+    height: 52px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.swapBtn {
+  width: 28px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  color: rgba(0,0,0,.35);
+  cursor: pointer;
+  flex-shrink: 0;
+  align-self: center;
+  margin-top: 2px;
+  &.swapBtnDisabled {
+    cursor: default;
+    opacity: .2;
+  }
 }

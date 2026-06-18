@@ -10,15 +10,16 @@ import Decorate from '../components/decorate';
 import Number from '../components/number';
 import Next from '../components/next';
 import Music from '../components/music';
-import Pause from '../components/pause';
 import Point from '../components/point';
 import Logo from '../components/logo';
 import Keyboard from '../components/keyboard';
-import Guide from '../components/guide';
 
 import { transform, lastRecord, speeds, i18n, lan } from '../unit/const';
 import { visibilityChangeEvent, isFocus } from '../unit/';
+import store from '../store';
+import actions from '../actions';
 import states from '../control/states';
+import { music } from '../unit/music';
 
 class App extends React.Component {
   constructor() {
@@ -60,24 +61,15 @@ class App extends React.Component {
     });
   }
   render() {
-    let filling = 0;
+    const filling = 0;
     const size = (() => {
       const w = this.state.w;
       const h = this.state.h;
-      const ratio = h / w;
-      let scale;
-      let css = {};
-      if (ratio < 1.5) {
-        scale = h / 960;
-      } else {
-        scale = w / 640;
-        filling = (h - (960 * scale)) / scale / 3;
-        css = {
-          paddingTop: Math.floor(filling) + 42,
-          paddingBottom: Math.floor(filling),
-          marginTop: Math.floor(-480 - (filling * 1.5)),
-        };
-      }
+      const baseW = 500;
+      const baseH = 1140;
+      let scale = Math.min(w / baseW, h / baseH);
+      if (scale > 1) scale = 1;
+      const css = {};
       css[transform] = `scale(${scale})`;
       return css;
     })();
@@ -91,34 +83,117 @@ class App extends React.Component {
           <Decorate />
           <div className={style.screen}>
             <div className={style.panel}>
-              <Matrix
-                matrix={this.props.matrix}
-                cur={this.props.cur}
-                reset={this.props.reset}
-              />
-              <Logo cur={!!this.props.cur} reset={this.props.reset} />
-              <div className={style.state}>
-                <Point cur={!!this.props.cur} point={this.props.points} max={this.props.max} />
-                <p>{ this.props.cur ? i18n.cleans[lan] : i18n.startLine[lan] }</p>
-                <Number number={this.props.cur ? this.props.clearLines : this.props.startLines} />
-                <p>{i18n.level[lan]}</p>
-                <Number
-                  number={this.props.cur ? this.props.speedRun : this.props.speedStart}
-                  length={1}
-                />
-                <p>{i18n.next[lan]}</p>
-                <Next data={this.props.next} />
-                <div className={style.bottom}>
-                  <Music data={this.props.music} />
-                  <Pause data={this.props.pause} />
-                  <Number time />
-                </div>
+              <div className={style.topBar}>
+                {!this.props.cur ? (
+                  <div className={style.preGame}>
+                    <div className={style.topStatCol}>
+                      <span>{i18n.highestScore[lan]}</span>
+                      <Number number={this.props.max} />
+                    </div>
+                    <div className={style.topStatCol}>
+                      <span>{i18n.startLine[lan]}</span>
+                      <Number number={this.props.startLines} length={1} />
+                    </div>
+                    <div className={style.topStatCol}>
+                      <span>{i18n.level[lan]}</span>
+                      <Number number={this.props.speedStart} length={1} />
+                    </div>
+                  </div>
+                ) : (
+                  <div className={style.inGame}>
+                    <div className={style.topLeft}>
+                      <span>{i18n.cleans[lan]}</span>
+                      <Number number={this.props.clearLines} />
+                    </div>
+                    <div className={style.topCenter}>
+                      <Next data={this.props.next} />
+                    </div>
+                    <div className={style.topRight}>
+                      <div className={style.topScoreBox}>
+                        <Point
+                          cur={!!this.props.cur}
+                          point={this.props.points}
+                          max={this.props.max}
+                        />
+                      </div>
+                      <div className={style.switchGroup}>
+                        <div
+                          className={style.topRestart}
+                          onMouseDown={() => {
+                            states.overStart();
+                            setTimeout(() => states.start(), 500);
+                          }}
+                          onTouchStart={() => {
+                            states.overStart();
+                            setTimeout(() => states.start(), 500);
+                          }}
+                        >
+                          {i18n.reset[lan]}
+                        </div>
+                        <div
+                          className={style.topMusic}
+                          onMouseDown={() => {
+                            const on = !store.getState().get('music');
+                            store.dispatch(actions.music(on));
+                            if (on) {
+                              const s = store.getState();
+                              if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
+                                if (music.bgmStart) music.bgmStart();
+                              }
+                            } else if (music.bgmStop) {
+                              music.bgmStop();
+                            }
+                          }}
+                          onTouchStart={() => {
+                            const on = !store.getState().get('music');
+                            store.dispatch(actions.music(on));
+                            if (on) {
+                              const s = store.getState();
+                              if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
+                                if (music.bgmStart) music.bgmStart();
+                              }
+                            } else if (music.bgmStop) {
+                              music.bgmStop();
+                            }
+                          }}
+                        >
+                          <Music data={this.props.music} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
+              <div className={style.boardArea}>
+                <Matrix
+                  matrix={this.props.matrix}
+                  cur={this.props.cur}
+                  reset={this.props.reset}
+                />
+                <Logo cur={!!this.props.cur} reset={this.props.reset} />
+                {!this.props.cur && (
+                  <div
+                    className={style.startButton}
+                    onMouseDown={() => states.start()}
+                    onTouchStart={() => states.start()}
+                  >
+                    {i18n.start[lan]}
+                  </div>
+                )}
+                {this.props.pause && this.props.cur && (
+                  <div
+                    className={style.continueOverlay}
+                    onMouseDown={() => states.pause(false)}
+                    onTouchStart={() => states.pause(false)}
+                  >
+                    <span>{i18n.continue[lan]}</span>
+                  </div>
+                )}
+              </div>
+              <Keyboard filling={filling} keyboard={this.props.keyboard} />
             </div>
           </div>
         </div>
-        <Keyboard filling={filling} keyboard={this.props.keyboard} />
-        <Guide />
       </div>
     );
   }

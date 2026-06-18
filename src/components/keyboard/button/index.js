@@ -11,12 +11,18 @@ export default class Button extends React.Component {
   }
   render() {
     const {
-      active, color, size, top, left, label, position, arrow,
+      active, color, size, label, position, arrow, staticPos,
     } = this.props;
+    const btnProps = this.props;
     return (
       <div
-        className={cn({ [style.button]: true, [style[color]]: true, [style[size]]: true })}
-        style={{ top, left }}
+        className={cn({
+          [style.button]: true,
+          [style[color]]: true,
+          [style[size]]: true,
+          [style.staticPos]: staticPos,
+        })}
+        style={staticPos ? {} : { top: btnProps.top, left: btnProps.left }}
       >
         <i
           className={cn({ [style.active]: active })}
@@ -27,7 +33,7 @@ export default class Button extends React.Component {
             [transform]: `${arrow} scale(1,2)`,
           }}
         /> }
-        <span className={cn({ [style.position]: position })}>{label}</span>
+        {label ? <span className={cn({ [style.position]: position })}>{label}</span> : null}
       </div>
     );
   }
@@ -36,11 +42,11 @@ export default class Button extends React.Component {
 Button.propTypes = {
   color: propTypes.string.isRequired,
   size: propTypes.string.isRequired,
-  top: propTypes.number.isRequired,
-  left: propTypes.number.isRequired,
+  top: propTypes.number,
+  left: propTypes.number,
   label: propTypes.string.isRequired,
   position: propTypes.bool,
   arrow: propTypes.string,
   active: propTypes.bool.isRequired,
+  staticPos: propTypes.bool,
 };
-
