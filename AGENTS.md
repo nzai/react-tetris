@@ -9,71 +9,78 @@ npm install
 # 开发模式（webpack-dev-server）
 npm start
 
-# 生产构建（Windows 下 rm/cp 不可用，只运行 webpack）
-npx webpack --config webpack.production.config.js
-# 构建产物在 docs/ 目录，需手动复制 mp3 文件：
-# Copy-Item src/resource/music/*.mp3 docs/
+# 生产构建（跨平台）
+npm run build
+# 或手动：
+# rimraf ./docs && node --no-warnings node_modules/webpack/bin/webpack.js --config ./webpack.production.config.js --progress && node -e "require('fs').copyFileSync('src/resource/music/music.mp3','docs/music.mp3')"
 ```
-
-> 注意：`npm run build` 在 Windows 下会失败，因为脚本使用了 Unix `rm -rf` 和 `cp` 命令。
 
 ## 项目结构
 
 ```
 src/
   components/
-    keyboard/       # 触屏按钮组件（方向键 + 旋转/掉落）
-      button/       # 按钮子组件
     logo/           # Logo 和"开始游戏"按钮
     matrix/         # 棋盘渲染 + 幽灵方块
     music/          # 音效图标
     next/           # 下一个方块预览
     number/         # 数字精灵组件
     point/          # 得分/最高分显示
-  containers/       # 主布局容器 (App)
-  control/          # 游戏控制逻辑
+    decorate/       # 装饰元素
+  containers/       # 主布局容器 (App) + 手势拖拽逻辑
+  control/          # 游戏控制
     states.js       # 状态机（开始/暂停/结束/消除）
-    todo/           # 键盘/按钮动作分发
-  unit/             # 工具函数、常量、音乐
+    todo/           # 动作分发（被手势系统作为黑盒调用）
+  unit/             # 工具函数、常量、音频合成
+    music.js        # Web Audio 音效 + BGM 合成器
   store/            # Redux store
   actions/          # Redux actions
   reducers/         # Redux reducers
-  resource/music/   # 音频文件 (bgm.mp3, etc.)
+  resource/music/   # 音频文件 (music.mp3 音效)
 i18n.json           # 多语言配置
 ```
 
-## 禁止修改的文件
+## 输入输出模型
 
-以下文件包含核心游戏逻辑，修改可能导致游戏无法正常游玩：
+手势操作通过调用 `todo[key].down(store)` + `todo[key].up(store)` 模拟单次按键，不修改 todo 内部计算逻辑。
 
-- `src/control/states.js`
-- `src/control/todo/*.js`
-- `src/unit/music.js`
-- `src/unit/block.js`
-- `src/reducers/`
-- `src/actions/`
-- `src/store/`
+| 层 | 可修改 | 文件 |
+|----|--------|------|
+| 输入（手势捕获） | ✓ | `containers/index.js`（onDragStart/Move/End） |
+| 输出（UI 布局） | ✓ | `containers/`、`components/`、`i18n.json` |
+| 计算（游戏逻辑） | ✗ | `control/`、`unit/block.js`、`reducers/`、`actions/`、`store/` |
 
-仅修改 UI 层文件：`src/containers/`、`src/components/`（除上述禁止文件）、`i18n.json`。
+## 布局尺寸
+
+- 容器 `.app`：500px，`position: absolute; top:50%; left:50%; translate(-50%,-50%) scale()`
+- 格子 `b`：40×40px + 2px margin
+- 棋盘：420×840px（10×20），matrix 428px 宽
+- 缩放：`min(innerWidth/500, innerHeight/1040)`，capped at 1
+- 视口：`width=device-width, initial-scale=1.0`
 
 ## 关键陷阱
 
-### 移动端点击不触发
-Keyboard 组件在 `componentDidMount` 中执行了：
-```js
-document.addEventListener('touchstart', (e) => { e.preventDefault(); }, true);
-```
-捕获阶段的 `preventDefault` 阻止了浏览器合成 `click` 事件。UI 按钮必须使用 `onMouseDown` + `onTouchStart` 替代 `onClick`。
-
-### 隐藏按钮 ref 不可删除
-Keyboard 组件遍历 `todo` 对象的 key，为每个按钮注册事件时依赖 `this.dom_p`、`this.dom_s`、`this.dom_r` 等 ref。这些按钮即使不显示也必须存在于 DOM 中（`display:none`），否则会触发 `TypeError`。
+### `transform: scale()` 不改变盒模型
+用 `position: absolute` + `translate(-50%,-50%)` 居中缩放元素，避免 flexbox 居中未缩放盒模型导致的偏移。
 
 ### React 15 不支持 Fragment
-使用 `<div>` 包裹多个元素，不能使用 `<>...</>` Fragment 简写。
+使用 `<div>` 包裹多个元素。
+
+### 移动端滚动阻止
+- CSS: `touch-action: none; overflow: hidden`
+- JS: `document.addEventListener('touchmove', e.preventDefault, {passive:false})`
+- Viewport: `user-scalable=no`
+
+### AudioContext 挂起恢复
+移动端浏览器需用户交互后 `context.resume()`，已通过 `touchstart/mousedown/keydown` 首次交互恢复。
+
+### Number 默认位数
+`Number.defaultProps.length = 7`，如需不同位数显式传 `length` prop。
 
 ## 技术栈
 - React 15 + Redux
 - Immutable.js
-- Webpack 3
-- Less
-- CSS `transform: scale()` 实现响应式缩放
+- Webpack 3 / Babel
+- Less (CSS Modules)
+- Web Audio API（音效播放 + BGM 方波合成）
+- CSS `transform: scale()` 响应式缩放

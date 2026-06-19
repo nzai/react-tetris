@@ -6,6 +6,7 @@ module.exports = {
     ],
     "rules": {
         "react/jsx-filename-extension": [2, { extensions: ['.js','.jsx'] }],
+        "react/require-extension": [0],
         "func-names": [0],
         "new-cap": [2, { newIsCap: true ,capIsNew: true, capIsNewExceptions: ['List', 'Map']}],
         "linebreak-style": [0]

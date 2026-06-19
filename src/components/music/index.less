@@ -1,9 +1,16 @@
 .music{
-  width: 25px;
-  height: 21px;
-  background-position: -175px -75px;
-
+  width: 50px;
+  height: 42px;
+  background-position: -350px -150px;
+  background-size: 800px 372px;
+  animation: pulse 2s infinite;
   &.c{
-    background-position: -150px -75px;
+    background-position: -300px -150px;
+    animation: none;
   }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
 }

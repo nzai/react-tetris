@@ -28,22 +28,22 @@ class Block {
           this.xy = List([0, 3]);
           break;
         case 'L': // L
-          this.xy = List([-1, 4]);
+          this.xy = List([0, 4]);
           break;
         case 'J': // J
-          this.xy = List([-1, 4]);
+          this.xy = List([0, 4]);
           break;
         case 'Z': // Z
-          this.xy = List([-1, 4]);
+          this.xy = List([0, 4]);
           break;
         case 'S': // S
-          this.xy = List([-1, 4]);
+          this.xy = List([0, 4]);
           break;
         case 'O': // O
-          this.xy = List([-1, 4]);
+          this.xy = List([0, 4]);
           break;
         case 'T': // T
-          this.xy = List([-1, 4]);
+          this.xy = List([0, 4]);
           break;
         default:
           break;

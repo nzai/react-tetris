@@ -91,5 +91,5 @@ Number.propTypes = {
 };
 
 Number.defaultProps = {
-  length: 6,
+  length: 7,
 };

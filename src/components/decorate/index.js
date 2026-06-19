@@ -23,7 +23,10 @@ export default class Decorate extends React.Component {
           <span className={cn(['r', style.ml])} />
           <span className={cn(['r', style.ml])} />
         </div>
-        <h1>{i18n.title[lan]}</h1>
+        <h1>
+          <span className={style.cn}>{i18n.title[lan]}</span>
+          <span className={style.en}>TETRIS</span>
+        </h1>
       </div>
     );
   }
