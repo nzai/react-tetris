@@ -88,20 +88,22 @@ export default class Matrix extends React.Component {
           }
         })
       ));
-      const ghostY = this.getGhostY(cur, props.matrix);
-      if (ghostY !== xy.get(0)) {
-        shape.forEach((m, k1) => (
-          m.forEach((n, k2) => {
-            if (n && ghostY + k1 >= 0) {
-              const row = ghostY + k1;
-              const col = xy.get(1) + k2;
-              const line = matrix.get(row);
-              if (line.get(col) === 0) {
-                matrix = matrix.set(row, line.set(col, 3));
+      if (this.props.ghost !== false) {
+        const ghostY = this.getGhostY(cur, props.matrix);
+        if (ghostY !== xy.get(0)) {
+          shape.forEach((m, k1) => (
+            m.forEach((n, k2) => {
+              if (n && ghostY + k1 >= 0) {
+                const row = ghostY + k1;
+                const col = xy.get(1) + k2;
+                const line = matrix.get(row);
+                if (line.get(col) === 0) {
+                  matrix = matrix.set(row, line.set(col, 3));
+                }
               }
-            }
-          })
-        ));
+            })
+          ));
+        }
       }
     }
     return matrix;
@@ -200,4 +202,5 @@ Matrix.propTypes = {
   matrix: propTypes.object.isRequired,
   cur: propTypes.object,
   reset: propTypes.bool.isRequired,
+  ghost: propTypes.bool,
 };

@@ -28,6 +28,16 @@ const down = (store) => {
         const next = cur.rotate();
         if (want(next, state.get('matrix'))) {
           store.dispatch(actions.moveBlock(next));
+        } else {
+          for (let shift = 1; shift <= 2; shift++) {
+            const kicked = Object.assign({}, next, {
+              xy: [next.xy[0], next.xy[1] - shift],
+            });
+            if (want(kicked, state.get('matrix'))) {
+              store.dispatch(actions.moveBlock(kicked));
+              return;
+            }
+          }
         }
       },
     });

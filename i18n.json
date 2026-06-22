@@ -133,6 +133,36 @@
       "en": "Continue",
       "fr": "Continuer",
       "fa": "ادامه"
+    },
+    "ghost": {
+      "cn": "影子",
+      "en": "Ghost",
+      "fr": "Fantôme",
+      "fa": "شبح"
+    },
+    "speedTip": {
+      "cn": "点击修改起始速度",
+      "en": "Click to change speed",
+      "fr": "Cliquer pour changer la vitesse",
+      "fa": "برای تغییر سرعت کلیک کنید"
+    },
+    "startLineTip": {
+      "cn": "点击修改起始行",
+      "en": "Click to change start line",
+      "fr": "Cliquer pour changer la ligne de départ",
+      "fa": "برای تغییر خط شروع کلیک کنید"
+    },
+    "ghostTip": {
+      "cn": "点击切换影子方块",
+      "en": "Click to toggle ghost piece",
+      "fr": "Cliquer pour basculer la pièce fantôme",
+      "fa": "برای تغییر قطعه شبح کلیک کنید"
+    },
+    "soundTip": {
+      "cn": "点击切换音效",
+      "en": "Click to toggle sound",
+      "fr": "Cliquer pour basculer le son",
+      "fa": "برای تغییر صدا کلیک کنید"
     }
   }
 }

@@ -10,6 +10,7 @@ import Decorate from '../components/decorate';
 import Number from '../components/number';
 import Next from '../components/next';
 import Music from '../components/music';
+import Ghost from '../components/ghost';
 import Point from '../components/point';
 import Logo from '../components/logo';
 
@@ -44,6 +45,7 @@ class App extends React.Component {
   }
   componentWillMount() {
     window.addEventListener('resize', this.onResize, true);
+    window.addEventListener('orientationchange', this.onResize, false);
   }
   componentDidMount() {
     if (visibilityChangeEvent) {
@@ -75,11 +77,21 @@ class App extends React.Component {
     document.addEventListener('touchmove', (e) => {
       e.preventDefault();
     }, { passive: false });
+
+    document.body.addEventListener('touchstart', this.onDragStart, false);
+    document.body.addEventListener('touchmove', this.onDragMove, false);
+    document.body.addEventListener('touchend', this.onDragEnd, false);
+    document.body.addEventListener('mousedown', this.onDragStart, false);
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('orientationchange', this.onResize);
     window.removeEventListener('mousemove', this.onMouseMove);
     window.removeEventListener('mouseup', this.onMouseUp);
+    document.body.removeEventListener('touchstart', this.onDragStart, false);
+    document.body.removeEventListener('touchmove', this.onDragMove, false);
+    document.body.removeEventListener('touchend', this.onDragEnd, false);
+    document.body.removeEventListener('mousedown', this.onDragStart, false);
   }
   onResize() {
     this.setState({
@@ -89,6 +101,7 @@ class App extends React.Component {
   }
   onDragStart(e) {
     if (!this.props.cur || this.props.pause || this.props.reset) return;
+    if (this.topBarRef && this.topBarRef.contains(e.target)) return;
     const c = this.getDragCoords(e);
     if (!c) return;
     e.stopPropagation();
@@ -237,8 +250,10 @@ class App extends React.Component {
         <div className={classnames({ [style.rect]: true, [style.drop]: this.props.drop })}>
           <Decorate />
           <div className={style.screen}>
-            <div className={style.panel}>
-              <div className={style.topBar}>
+            <div
+              className={style.panel}
+            >
+              <div className={style.topBar} ref={(c) => { this.topBarRef = c; }}>
                 {!this.props.cur ? (
                   <div className={style.preGame}>
                     <div className={style.preGameStats}>
@@ -250,6 +265,7 @@ class App extends React.Component {
                       </div>
                       <div
                         className={style.topStatCol}
+                        title={i18n.startLineTip[lan]}
                         onMouseDown={() => {
                           const now = Date.now();
                           if (now - this.lastAdjTime < 200) return;
@@ -276,6 +292,7 @@ class App extends React.Component {
                       </div>
                       <div
                         className={style.topStatCol}
+                        title={i18n.speedTip[lan]}
                         onMouseDown={() => {
                           const now = Date.now();
                           if (now - this.lastAdjTime < 200) return;
@@ -302,7 +319,22 @@ class App extends React.Component {
                       </div>
                     </div>
                     <div
+                      className={style.preGhost}
+                      title={i18n.ghostTip[lan]}
+                      onMouseDown={() => {
+                        store.dispatch(actions.ghost(!store.getState().get('ghost')));
+                        music.click();
+                      }}
+                      onTouchStart={() => {
+                        store.dispatch(actions.ghost(!store.getState().get('ghost')));
+                        music.click();
+                      }}
+                    >
+                      <Ghost data={this.props.ghost} />
+                    </div>
+                    <div
                       className={style.preMusic}
+                      title={i18n.soundTip[lan]}
                       onMouseDown={() => {
                         store.dispatch(actions.music(!store.getState().get('music')));
                       }}
@@ -343,51 +375,65 @@ class App extends React.Component {
                       >
                         {i18n.reset[lan]}
                       </div>
-                      <div
-                        className={style.topMusic}
-                        onMouseDown={() => {
-                          const on = !store.getState().get('music');
-                          store.dispatch(actions.music(on));
-                          if (on) {
-                            const s = store.getState();
-                            if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
-                              if (music.bgmStart) music.bgmStart();
+                      <div className={style.switchGroup}>
+                        <div
+                          className={style.topGhost}
+                          title={i18n.ghostTip[lan]}
+                          onMouseDown={() => {
+                            store.dispatch(actions.ghost(!store.getState().get('ghost')));
+                            music.click();
+                          }}
+                          onTouchStart={() => {
+                            store.dispatch(actions.ghost(!store.getState().get('ghost')));
+                            music.click();
+                          }}
+                        >
+                          <Ghost data={this.props.ghost} />
+                        </div>
+                        <div
+                          className={style.topMusic}
+                          title={i18n.soundTip[lan]}
+                          onMouseDown={() => {
+                            const on = !store.getState().get('music');
+                            store.dispatch(actions.music(on));
+                            if (on) {
+                              const s = store.getState();
+                              if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
+                                if (music.bgmStart) music.bgmStart();
+                              }
+                            } else if (music.bgmStop) {
+                              music.bgmStop();
                             }
-                          } else if (music.bgmStop) {
-                            music.bgmStop();
-                          }
-                        }}
-                        onTouchStart={() => {
-                          const on = !store.getState().get('music');
-                          store.dispatch(actions.music(on));
-                          if (on) {
-                            const s = store.getState();
-                            if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
-                              if (music.bgmStart) music.bgmStart();
+                          }}
+                          onTouchStart={() => {
+                            const on = !store.getState().get('music');
+                            store.dispatch(actions.music(on));
+                            if (on) {
+                              const s = store.getState();
+                              if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
+                                if (music.bgmStart) music.bgmStart();
+                              }
+                            } else if (music.bgmStop) {
+                              music.bgmStop();
                             }
-                          } else if (music.bgmStop) {
-                            music.bgmStop();
-                          }
-                        }}
-                      >
-                        <Music data={this.props.music} />
+                          }}
+                        >
+                          <Music data={this.props.music} />
+                        </div>
                       </div>
                     </div>
                   </div>
-                )}
+                 )}
               </div>
               <div
                 className={style.boardArea}
                 ref={(c) => { this.dragRef = c; }}
-                onTouchStart={this.onDragStart}
-                onTouchMove={this.onDragMove}
-                onTouchEnd={this.onDragEnd}
-                onMouseDown={this.onDragStart}
               >
                 <Matrix
                   matrix={this.props.matrix}
                   cur={this.props.cur}
                   reset={this.props.reset}
+                  ghost={this.props.ghost}
                 />
                 <Logo cur={!!this.props.cur} reset={this.props.reset} />
                 {!this.props.cur && (
@@ -437,6 +483,7 @@ App.propTypes = {
   max: propTypes.number.isRequired,
   reset: propTypes.bool.isRequired,
   drop: propTypes.bool.isRequired,
+  ghost: propTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -453,6 +500,7 @@ const mapStateToProps = (state) => ({
   max: state.get('max'),
   reset: state.get('reset'),
   drop: state.get('drop'),
+  ghost: state.get('ghost'),
 });
 
 export default connect(mapStateToProps)(App);

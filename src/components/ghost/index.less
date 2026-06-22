@@ -1,0 +1,27 @@
+.ghost {
+  width: 50px;
+  height: 42px;
+  position: relative;
+  cursor: pointer;
+  span {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid #333;
+    background: rgba(0, 0, 0, 0.55);
+    border-radius: 2px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .b1 { top: 2px; left: 2px; }
+  .b2 { top: 2px; left: 18px; }
+  .b3 { top: 2px; left: 34px; }
+  .b4 { top: 18px; left: 18px; }
+  animation: pulse 2s infinite;
+  &.c {
+    animation: none;
+    span {
+      border-color: #9a9a9a;
+      background: rgba(180, 180, 180, 0.06);
+    }
+  }
+}

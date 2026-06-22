@@ -108,6 +108,13 @@ function focus(data) {
   };
 }
 
+function ghost(data) {
+  return {
+    type: reducerType.GHOST,
+    data,
+  };
+}
+
 export default {
   nextBlock,
   moveBlock,
@@ -125,4 +132,5 @@ export default {
   keyboard,
   music,
   focus,
+  ghost,
 };
