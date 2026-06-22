@@ -115,6 +115,13 @@ function ghost(data) {
   };
 }
 
+function theme(data) {
+  return {
+    type: reducerType.THEME,
+    data,
+  };
+}
+
 export default {
   nextBlock,
   moveBlock,
@@ -133,4 +140,5 @@ export default {
   music,
   focus,
   ghost,
+  theme,
 };

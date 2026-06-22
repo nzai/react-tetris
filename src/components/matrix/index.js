@@ -3,7 +3,7 @@ import immutable, { List } from 'immutable';
 import classnames from 'classnames';
 import propTypes from 'prop-types';
 
-import style from './index.less';
+import style from './index.module.less';
 import { isClear, want } from '../../unit/';
 import { fillLine, blankLine } from '../../unit/const';
 import states from '../../control/states';

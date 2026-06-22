@@ -140,6 +140,12 @@
       "fr": "Fantôme",
       "fa": "شبح"
     },
+    "theme": {
+      "cn": "主题",
+      "en": "Theme",
+      "fr": "Thème",
+      "fa": "پوسته"
+    },
     "speedTip": {
       "cn": "点击修改起始速度",
       "en": "Click to change speed",

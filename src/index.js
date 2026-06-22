@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { Provider } from 'react-redux';
 import store from './store';
 import App from './containers/';
@@ -9,10 +9,9 @@ import { subscribeRecord } from './unit';
 
 subscribeRecord(store); // 将更新的状态记录到localStorage
 
-render(
+const root = createRoot(document.getElementById('root'));
+root.render(
   <Provider store={store}>
     <App />
   </Provider>
-    , document.getElementById('root')
 );
-

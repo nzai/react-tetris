@@ -129,7 +129,7 @@ const music = {};
   req.send();
 })();
 
-module.exports = {
+export {
   hasWebAudioAPI,
   music,
 };

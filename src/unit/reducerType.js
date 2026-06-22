@@ -22,3 +22,4 @@ export const KEY_MUSIC = 'KEY_MUSIC';
 export const KEY_PAUSE = 'KEY_PAUSE';
 export const FOCUS = 'FOCUS';
 export const GHOST = 'GHOST';
+export const THEME = 'THEME';

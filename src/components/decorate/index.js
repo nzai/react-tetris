@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 
 import { i18n, lan } from '../../unit/const';
-import style from './index.less';
+import style from './index.module.less';
 
 export default class Decorate extends React.Component {
   shouldComponentUpdate() {

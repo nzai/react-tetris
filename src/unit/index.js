@@ -100,4 +100,12 @@ const unit = {
   isFocus,
 };
 
-module.exports = unit;
+export default unit;
+
+export const isClear = unit.isClear;
+export const want = unit.want;
+export const isOver = unit.isOver;
+export const subscribeRecord = unit.subscribeRecord;
+export const getNextType = unit.getNextType;
+export const isMobile = unit.isMobile;
+export { isFocus, visibilityChangeEvent };

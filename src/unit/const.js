@@ -107,7 +107,9 @@ const lan = (() => {
 
 document.title = i18n.data.title[lan];
 
-module.exports = {
+const i18nData = i18n.data;
+
+export {
   blockShape,
   origin,
   blockType,
@@ -123,5 +125,5 @@ module.exports = {
   eachLines,
   transform,
   lan,
-  i18n: i18n.data,
+  i18nData as i18n,
 };

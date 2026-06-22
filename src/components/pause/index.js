@@ -2,7 +2,7 @@ import React from 'react';
 import cn from 'classnames';
 import propTypes from 'prop-types';
 
-import style from './index.less';
+import style from './index.module.less';
 
 export default class Pause extends React.Component {
   constructor() {

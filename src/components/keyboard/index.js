@@ -3,7 +3,7 @@ import Immutable from 'immutable';
 import propTypes from 'prop-types';
 import classnames from 'classnames';
 
-import style from './index.less';
+import style from './index.module.less';
 import Button from './button';
 import store from '../../store';
 import todo from '../../control/todo';

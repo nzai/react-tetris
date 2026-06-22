@@ -126,6 +126,7 @@ body{
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: hidden;
   }
 }
 
@@ -145,7 +146,7 @@ body{
   }
   .preGameStats {
     display: flex;
-    gap: 35px;
+    gap: 50px;
     align-items: center;
     flex: 1;
     justify-content: center;
@@ -157,6 +158,30 @@ body{
   .preGhost {
     cursor: pointer;
     flex-shrink: 0;
+  }
+  .preTheme {
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .preSettings {
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .themeIcon {
+    font-size: 28px;
+    line-height: 42px;
+    display: block;
+  }
+  .preIcons {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .preIconRow {
+    display: flex;
+    gap: 4px;
+    align-items: center;
   }
   .topStatCol {
     display: flex;

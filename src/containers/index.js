@@ -3,14 +3,15 @@ import { connect } from 'react-redux';
 import classnames from 'classnames';
 import propTypes from 'prop-types';
 
-import style from './index.less';
+import style from './index.module.less';
 
 import Matrix from '../components/matrix';
 import Decorate from '../components/decorate';
 import Number from '../components/number';
 import Next from '../components/next';
-import Music from '../components/music';
-import Ghost from '../components/ghost';
+import ThemeDialog from '../components/theme/dialog';
+import SettingsDialog from '../components/settings/dialog';
+import { allThemes } from '../unit/themes';
 import Point from '../components/point';
 import Logo from '../components/logo';
 
@@ -32,6 +33,8 @@ class App extends React.Component {
     this.state = {
       w: window.innerWidth,
       h: window.innerHeight,
+      themeDialogOpen: false,
+      settingsOpen: false,
     };
     this.dragState = null;
     this.lastActionTime = 0;
@@ -252,6 +255,15 @@ class App extends React.Component {
           <div className={style.screen}>
             <div
               className={style.panel}
+              style={(() => {
+                const t = allThemes.find((item) => item.id === this.props.theme) || allThemes[0];
+                if (t.type === 'color') return { background: t.value };
+                return {
+                  backgroundImage: `url(${t.src})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                };
+              })()}
             >
               <div className={style.topBar} ref={(c) => { this.topBarRef = c; }}>
                 {!this.props.cur ? (
@@ -319,30 +331,28 @@ class App extends React.Component {
                       </div>
                     </div>
                     <div
-                      className={style.preGhost}
-                      title={i18n.ghostTip[lan]}
+                      className={style.preTheme}
+                      title={i18n.theme[lan]}
                       onMouseDown={() => {
-                        store.dispatch(actions.ghost(!store.getState().get('ghost')));
-                        music.click();
+                        this.setState({ themeDialogOpen: true });
                       }}
                       onTouchStart={() => {
-                        store.dispatch(actions.ghost(!store.getState().get('ghost')));
-                        music.click();
+                        this.setState({ themeDialogOpen: true });
                       }}
                     >
-                      <Ghost data={this.props.ghost} />
+                      <span className={style.themeIcon}>🎨</span>
                     </div>
                     <div
-                      className={style.preMusic}
-                      title={i18n.soundTip[lan]}
+                      className={style.preSettings}
+                      title="设置"
                       onMouseDown={() => {
-                        store.dispatch(actions.music(!store.getState().get('music')));
+                        this.setState({ settingsOpen: true });
                       }}
                       onTouchStart={() => {
-                        store.dispatch(actions.music(!store.getState().get('music')));
+                        this.setState({ settingsOpen: true });
                       }}
                     >
-                      <Music data={this.props.music} />
+                      <span className={style.themeIcon}>⚙️</span>
                     </div>
                   </div>
                 ) : (
@@ -374,52 +384,6 @@ class App extends React.Component {
                         }}
                       >
                         {i18n.reset[lan]}
-                      </div>
-                      <div className={style.switchGroup}>
-                        <div
-                          className={style.topGhost}
-                          title={i18n.ghostTip[lan]}
-                          onMouseDown={() => {
-                            store.dispatch(actions.ghost(!store.getState().get('ghost')));
-                            music.click();
-                          }}
-                          onTouchStart={() => {
-                            store.dispatch(actions.ghost(!store.getState().get('ghost')));
-                            music.click();
-                          }}
-                        >
-                          <Ghost data={this.props.ghost} />
-                        </div>
-                        <div
-                          className={style.topMusic}
-                          title={i18n.soundTip[lan]}
-                          onMouseDown={() => {
-                            const on = !store.getState().get('music');
-                            store.dispatch(actions.music(on));
-                            if (on) {
-                              const s = store.getState();
-                              if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
-                                if (music.bgmStart) music.bgmStart();
-                              }
-                            } else if (music.bgmStop) {
-                              music.bgmStop();
-                            }
-                          }}
-                          onTouchStart={() => {
-                            const on = !store.getState().get('music');
-                            store.dispatch(actions.music(on));
-                            if (on) {
-                              const s = store.getState();
-                              if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
-                                if (music.bgmStart) music.bgmStart();
-                              }
-                            } else if (music.bgmStop) {
-                              music.bgmStop();
-                            }
-                          }}
-                        >
-                          <Music data={this.props.music} />
-                        </div>
                       </div>
                     </div>
                   </div>
@@ -463,6 +427,40 @@ class App extends React.Component {
             </div>
           </div>
         </div>
+        {this.state.themeDialogOpen && (
+          <ThemeDialog
+            themes={allThemes}
+            active={this.props.theme}
+            onSelect={(id) => {
+              store.dispatch(actions.theme(id));
+              this.setState({ themeDialogOpen: false });
+            }}
+            onClose={() => this.setState({ themeDialogOpen: false })}
+          />
+        )}
+        {this.state.settingsOpen && (
+          <SettingsDialog
+            music={this.props.music}
+            ghost={this.props.ghost}
+            onToggleMusic={() => {
+              const on = !store.getState().get('music');
+              store.dispatch(actions.music(on));
+              if (on) {
+                const s = store.getState();
+                if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
+                  if (music.bgmStart) music.bgmStart();
+                }
+              } else if (music.bgmStop) {
+                music.bgmStop();
+              }
+            }}
+            onToggleGhost={() => {
+              store.dispatch(actions.ghost(!store.getState().get('ghost')));
+              music.click();
+            }}
+            onClose={() => this.setState({ settingsOpen: false })}
+          />
+        )}
       </div>
     );
   }
@@ -484,6 +482,7 @@ App.propTypes = {
   reset: propTypes.bool.isRequired,
   drop: propTypes.bool.isRequired,
   ghost: propTypes.bool.isRequired,
+  theme: propTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
@@ -501,6 +500,7 @@ const mapStateToProps = (state) => ({
   reset: state.get('reset'),
   drop: state.get('drop'),
   ghost: state.get('ghost'),
+  theme: state.get('theme'),
 });
 
 export default connect(mapStateToProps)(App);
