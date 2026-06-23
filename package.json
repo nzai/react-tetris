@@ -8,6 +8,7 @@
     "dev": "vite",
     "start": "vite",
     "build": "vite build && node -e \"require('fs').copyFileSync('public/music.mp3','docs/music.mp3')\"",
+    "deploy": "vite build && node -e \"require('fs').copyFileSync('public/music.mp3','docs/music.mp3')\" && scp -r docs/* la:~/tetris && ssh la sh update_tetris.sh",
     "preview": "vite preview"
   },
   "repository": {

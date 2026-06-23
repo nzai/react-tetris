@@ -287,7 +287,8 @@ class App extends React.Component {
                           store.dispatch(actions.startLines(next));
                           music.click();
                         }}
-                        onTouchStart={() => {
+                        onTouchStart={(e) => {
+                          e.preventDefault();
                           const now = Date.now();
                           if (now - this.lastAdjTime < 200) return;
                           this.lastAdjTime = now;
@@ -314,7 +315,8 @@ class App extends React.Component {
                           store.dispatch(actions.speedStart(next));
                           music.click();
                         }}
-                        onTouchStart={() => {
+                        onTouchStart={(e) => {
+                          e.preventDefault();
                           const now = Date.now();
                           if (now - this.lastAdjTime < 200) return;
                           this.lastAdjTime = now;
@@ -336,7 +338,8 @@ class App extends React.Component {
                       onMouseDown={() => {
                         this.setState({ themeDialogOpen: true });
                       }}
-                      onTouchStart={() => {
+                      onTouchStart={(e) => {
+                        e.preventDefault();
                         this.setState({ themeDialogOpen: true });
                       }}
                     >
@@ -348,7 +351,8 @@ class App extends React.Component {
                       onMouseDown={() => {
                         this.setState({ settingsOpen: true });
                       }}
-                      onTouchStart={() => {
+                      onTouchStart={(e) => {
+                        e.preventDefault();
                         this.setState({ settingsOpen: true });
                       }}
                     >
@@ -378,7 +382,8 @@ class App extends React.Component {
                           states.overStart();
                           setTimeout(() => states.start(), 500);
                         }}
-                        onTouchStart={() => {
+                        onTouchStart={(e) => {
+                          e.preventDefault();
                           states.overStart();
                           setTimeout(() => states.start(), 500);
                         }}
@@ -405,7 +410,7 @@ class App extends React.Component {
                     <div
                       className={style.startButton}
                       onMouseDown={() => states.start()}
-                      onTouchStart={() => states.start()}
+                      onTouchStart={(e) => { e.preventDefault(); states.start(); }}
                     >
                       {i18n.start[lan]}
                     </div>
@@ -418,7 +423,7 @@ class App extends React.Component {
                   <div
                     className={style.continueOverlay}
                     onMouseDown={() => states.pause(false)}
-                    onTouchStart={() => states.pause(false)}
+                    onTouchStart={(e) => { e.preventDefault(); states.pause(false); }}
                   >
                     <span>{i18n.continue[lan]}</span>
                   </div>
@@ -442,21 +447,23 @@ class App extends React.Component {
           <SettingsDialog
             music={this.props.music}
             ghost={this.props.ghost}
-            onToggleMusic={() => {
-              const on = !store.getState().get('music');
-              store.dispatch(actions.music(on));
-              if (on) {
-                const s = store.getState();
-                if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
-                  if (music.bgmStart) music.bgmStart();
+            onConfirm={(newMusic, newGhost) => {
+              if (newMusic !== this.props.music) {
+                store.dispatch(actions.music(newMusic));
+                if (newMusic) {
+                  const s = store.getState();
+                  if (s.get('cur') && !s.get('reset') && !s.get('pause')) {
+                    if (music.bgmStart) music.bgmStart();
+                  }
+                } else if (music.bgmStop) {
+                  music.bgmStop();
                 }
-              } else if (music.bgmStop) {
-                music.bgmStop();
               }
-            }}
-            onToggleGhost={() => {
-              store.dispatch(actions.ghost(!store.getState().get('ghost')));
-              music.click();
+              if (newGhost !== this.props.ghost) {
+                store.dispatch(actions.ghost(newGhost));
+                music.click();
+              }
+              this.setState({ settingsOpen: false });
             }}
             onClose={() => this.setState({ settingsOpen: false })}
           />

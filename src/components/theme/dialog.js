@@ -20,6 +20,7 @@ const previewGrid = [
 class ThemeDialog extends React.Component {
   constructor(props) {
     super(props);
+    this.lastTap = 0;
     this.state = {
       pending: props.active,
     };
@@ -40,6 +41,14 @@ class ThemeDialog extends React.Component {
       ? { background: selected.value }
       : { backgroundImage: `url(${selected.src})` };
 
+    const tap = (fn) => (e) => {
+      e.preventDefault();
+      const now = Date.now();
+      if (now - this.lastTap < 300) return;
+      this.lastTap = now;
+      fn();
+    };
+
     return (
       <div className={style.overlay} onMouseDown={onClose}>
         <div className={style.dialog} onMouseDown={(e) => e.stopPropagation()}>
@@ -50,7 +59,7 @@ class ThemeDialog extends React.Component {
                 <div
                   key={t.id}
                   className={cn(style.item, { [style.active]: t.id === pending })}
-                  onMouseDown={() => this.setState({ pending: t.id })}
+                  onMouseDown={tap(() => this.setState({ pending: t.id }))}
                 >
                   {t.type === 'color' ? (
                     <span className={style.swatch} style={{ background: t.value }} />
@@ -80,7 +89,7 @@ class ThemeDialog extends React.Component {
               </div>
             </div>
           </div>
-          <button className={style.confirmBtn} onClick={() => onSelect(pending)}>
+          <button className={style.confirmBtn} onMouseDown={tap(() => onSelect(pending))}>
             确定
           </button>
         </div>

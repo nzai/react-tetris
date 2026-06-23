@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.55);
   z-index: 100;
   display: flex;
   align-items: center;
@@ -9,15 +9,15 @@
 }
 
 .dialog {
-  background: #fff;
-  border-radius: 8px;
+  background: #9ead86;
+  border: 2px solid #494536;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
   max-width: 480px;
   width: 90%;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 3px #987f0f, 0 0 0 6px #fae36c, 0 4px 20px rgba(0, 0, 0, 0.3);
   position: relative;
 }
 
@@ -28,7 +28,7 @@
 
 .list {
   flex: 1;
-  max-height: 280px;
+  max-height: 260px;
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -37,51 +37,51 @@
 
 .item {
   padding: 8px 10px;
-  border: 2px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid rgba(0, 0, 0, 0.2);
   cursor: pointer;
   font-size: 14px;
   display: flex;
   align-items: center;
   gap: 8px;
-  transition: border-color 0.15s;
+  background: rgba(255, 255, 255, 0.3);
+  color: #333;
 
   &:hover {
-    border-color: #999;
+    border-color: #494536;
+    background: rgba(255, 255, 255, 0.5);
   }
 
   &.active {
-    border-color: #333;
-    background: #f0f0f0;
+    border-color: #494536;
+    background: rgba(255, 255, 255, 0.7);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
   }
 }
 
 .swatch {
   width: 20px;
   height: 20px;
-  border-radius: 3px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
 }
 
 .thumb {
   width: 30px;
   height: 20px;
-  border-radius: 2px;
   background-size: cover;
   background-position: center;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   flex-shrink: 0;
 }
 
 .preview {
   width: 140px;
-  height: 280px;
+  height: 260px;
   border: 2px solid #494536;
-  border-radius: 4px;
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.15);
 }
 
 .bg {
@@ -121,33 +121,35 @@
 
 .closeBtn {
   position: absolute;
-  top: 6px;
-  right: 10px;
+  top: -8px;
+  right: -8px;
   z-index: 2;
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: #fff;
-  border-radius: 50%;
-  font-size: 22px;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #494536;
+  background: #c0392b;
+  color: #fff;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
   cursor: pointer;
-  color: #999;
-  line-height: 1;
   &:hover {
-    color: #333;
+    background: #e74c3c;
   }
 }
 
 .confirmBtn {
-  align-self: center;
-  padding: 8px 32px;
-  background: #333;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
+  display: block;
+  margin: 12px auto 0 auto;
+  padding: 8px 28px;
+  background: #efcc19;
+  color: #333;
+  border: 2px solid #c9a800;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   &:hover {
-    background: #555;
+    background: #f0d830;
   }
 }
