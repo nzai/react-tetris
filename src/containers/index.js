@@ -431,6 +431,7 @@ class App extends React.Component {
               </div>
             </div>
           </div>
+          <span className={style.version}>v{__BUILD_TIME__}</span>
         </div>
         {this.state.themeDialogOpen && (
           <ThemeDialog

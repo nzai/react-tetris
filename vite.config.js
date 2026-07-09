@@ -1,7 +1,15 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
+// 编译时间戳，格式 YYYYMMDDHHmm，作为版本号注入全局常量
+const now = new Date();
+const pad = (n) => String(n).padStart(2, '0');
+const buildTime = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}${pad(now.getHours())}${pad(now.getMinutes())}`;
+
 export default defineConfig({
+  define: {
+    __BUILD_TIME__: JSON.stringify(buildTime),
+  },
   plugins: [react({ include: '**/*.{js,jsx}' })],
   esbuild: {
     loader: 'jsx',
