@@ -29,9 +29,21 @@ const down = (store) => {
         if (want(next, state.get('matrix'))) {
           store.dispatch(actions.moveBlock(next));
         } else {
+          // 旋转后直接放置会越界，尝试向左右微调（wall kick）
+          // 1. 方块靠右墙时旋转可能超出右边界，试左移 1~2 格让方块"弹"进棋盘
           for (let shift = 1; shift <= 2; shift++) {
             const kicked = Object.assign({}, next, {
               xy: [next.xy[0], next.xy[1] - shift],
+            });
+            if (want(kicked, state.get('matrix'))) {
+              store.dispatch(actions.moveBlock(kicked));
+              return;
+            }
+          }
+          // 2. 方块靠左墙时旋转可能超出左边界，试右移 1~2 格避免"吸住"不动
+          for (let shift = 1; shift <= 2; shift++) {
+            const kicked = Object.assign({}, next, {
+              xy: [next.xy[0], next.xy[1] + shift],
             });
             if (want(kicked, state.get('matrix'))) {
               store.dispatch(actions.moveBlock(kicked));
