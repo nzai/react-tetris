@@ -35,6 +35,7 @@ class App extends React.Component {
       h: window.innerHeight,
       themeDialogOpen: false,
       settingsOpen: false,
+      dialogOpenTime: 0,
     };
     this.dragState = null;
     this.lastActionTime = 0;
@@ -78,6 +79,7 @@ class App extends React.Component {
       }, { passive: false });
     }
     document.addEventListener('touchmove', (e) => {
+      if (e.target.closest('[data-scrollable]')) return;
       e.preventDefault();
     }, { passive: false });
 
@@ -246,6 +248,7 @@ class App extends React.Component {
     })();
 
     return (
+      <>
       <div
         className={style.app}
         style={size}
@@ -336,11 +339,11 @@ class App extends React.Component {
                       className={style.preTheme}
                       title={i18n.theme[lan]}
                       onMouseDown={() => {
-                        this.setState({ themeDialogOpen: true });
+                        this.setState({ themeDialogOpen: true, dialogOpenTime: Date.now() });
                       }}
                       onTouchStart={(e) => {
                         e.preventDefault();
-                        this.setState({ themeDialogOpen: true });
+                        this.setState({ themeDialogOpen: true, dialogOpenTime: Date.now() });
                       }}
                     >
                       <span className={style.themeIcon}>🎨</span>
@@ -349,11 +352,11 @@ class App extends React.Component {
                       className={style.preSettings}
                       title="设置"
                       onMouseDown={() => {
-                        this.setState({ settingsOpen: true });
+                        this.setState({ settingsOpen: true, dialogOpenTime: Date.now() });
                       }}
                       onTouchStart={(e) => {
                         e.preventDefault();
-                        this.setState({ settingsOpen: true });
+                        this.setState({ settingsOpen: true, dialogOpenTime: Date.now() });
                       }}
                     >
                       <span className={style.themeIcon}>⚙️</span>
@@ -433,10 +436,12 @@ class App extends React.Component {
           </div>
           <span className={style.version}>v{__BUILD_TIME__}</span>
         </div>
+        </div>
         {this.state.themeDialogOpen && (
           <ThemeDialog
             themes={allThemes}
             active={this.props.theme}
+            openTime={this.state.dialogOpenTime}
             onSelect={(id) => {
               store.dispatch(actions.theme(id));
               this.setState({ themeDialogOpen: false });
@@ -448,6 +453,7 @@ class App extends React.Component {
           <SettingsDialog
             music={this.props.music}
             ghost={this.props.ghost}
+            openTime={this.state.dialogOpenTime}
             onConfirm={(newMusic, newGhost) => {
               if (newMusic !== this.props.music) {
                 store.dispatch(actions.music(newMusic));
@@ -469,7 +475,7 @@ class App extends React.Component {
             onClose={() => this.setState({ settingsOpen: false })}
           />
         )}
-      </div>
+      </>
     );
   }
 }
