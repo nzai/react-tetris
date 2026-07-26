@@ -32,7 +32,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'docs',
+    outDir: 'dist',
     assetsInlineLimit: 8192,
   },
   server: {
