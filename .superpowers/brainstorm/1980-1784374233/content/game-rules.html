@@ -1,0 +1,82 @@
+<h2>双人游戏规则</h2>
+<p class="subtitle">12×20 棋盘，两人同时操控。这些规则怎么定？</p>
+
+<div class="section">
+  <h3>🏆 分数</h3>
+</div>
+<div class="options">
+  <div class="option" data-choice="score-shared" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>共享分数</h3>
+      <p>两人是一个团队，消行得分计入同一个总分。合作导向，简单明了。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="score-separate" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>各自计分</h3>
+      <p>各自消的行各自计分，显示两个分数。有竞争意味，但可能影响合作意愿。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>💀 死亡规则</h3>
+</div>
+<div class="options">
+  <div class="option" data-choice="death-shared" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>任意一人触顶 → 双人游戏结束</h3>
+      <p>只要有一个人的方块堆到顶部，游戏就结束。强调配合——必须互相照应，不能让队友堆太高。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="death-individual" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>玩家触顶后出局，另一人继续</h3>
+      <p>触顶的玩家不能再落块，其已堆放的方块保留在棋盘上（变成障碍物）。另一人继续独自玩直到也触顶。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>🎯 Next 预览</h3>
+</div>
+<div class="options">
+  <div class="option" data-choice="next-shared" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>共享 next 队列</h3>
+      <p>两人看到相同的下一个方块预览。方块从同一个队列中取出，交替分配给两个玩家。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="next-separate" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>各自独立 next</h3>
+      <p>每个玩家有自己的随机方块队列，互不影响。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>⏱️ 速度</h3>
+</div>
+<div class="options">
+  <div class="option" data-choice="speed-same" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>两人相同速度</h3>
+      <p>统一的自动下落速度，公平简单。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="speed-separate" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>各自独立速度</h3>
+      <p>每个玩家可以根据自己的节奏调速度（开始前设置）。</p>
+    </div>
+  </div>
+</div>

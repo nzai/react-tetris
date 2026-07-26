@@ -1,0 +1,55 @@
+<h2>如何发现房间？（不输 IP）</h2>
+<p class="subtitle">浏览器无法扫描局域网。以下是绕过手动输入 IP 的实用方案：</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>📱 二维码扫码加入 ⭐ 最推荐</h3>
+      <p>房主创建房间后，屏幕上显示一个<strong>二维码</strong>，内含 <code>ws://192.168.1.5:3456</code> 的完整连接地址。另一个玩家用手机扫一扫即可加入，<strong>零输入、零配置</strong>。二维码本身就是"发现"机制。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>优点</h4><ul><li>完全不需要知道 IP</li><li>适合手机+PC 混合场景</li><li>实现简单（qrcode 库 ≈ 5KB）</li></ul></div>
+        <div class="cons"><h4>缺点</h4><ul><li>两个手机之间扫码不太方便</li><li>需要摄像头权限</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>🔢 房间号 + 轻量中继</h3>
+      <p>需要一个<strong>极简中继服务器</strong>（几十行代码），部署在局域网内任意一台机器或公网。房主创建房间 → 得到 4 位房间号，客机输入房间号 → 中继服务器匹配双方 WebSocket 地址，后续直连。</p>
+      <div class="pros-cons">
+        <div class="pros"><h4>优点</h4><ul><li>输入 4 位数字即可</li><li>两个手机也能方便配对</li><li>可扩展到互联网联机</li></ul></div>
+        <div class="cons"><h4>缺点</h4><ul><li>需要额外部署中继服务</li><li>中继挂了就配对不了</li></ul></div>
+      </div>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>🔗 分享链接（手动兜底）</h3>
+      <p>房主页面显示完整加入链接（如 <code>http://192.168.1.5:3456/join</code>），通过微信/短信/隔空投送发给对方。同时保留手动输 IP 作为兜底。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <h3>推荐策略：二维码为主 + 手动兜底</h3>
+</div>
+
+<div class="mockup">
+  <div class="mockup-header">房主创建房间后的界面示意</div>
+  <div class="mockup-body" style="padding:24px;display:flex;gap:32px;justify-content:center;align-items:center">
+    <div style="background:#fff;padding:16px;border-radius:8px;text-align:center;width:180px">
+      <div style="width:140px;height:140px;background:#1a1a2e;margin:0 auto 12px;display:flex;align-items:center;justify-content:center;border-radius:4px">
+        <div style="width:100px;height:100px;background:repeating-conic-gradient(#000 0% 25%, #fff 0% 50%) 50% / 20px 20px;border-radius:2px"></div>
+      </div>
+      <div style="font-size:11px;color:#666">扫描二维码加入</div>
+    </div>
+    <div style="font-size:20px;color:#888">或</div>
+    <div style="background:#2d2d44;padding:16px 20px;border-radius:8px;text-align:center">
+      <div style="font-size:11px;color:#888;margin-bottom:4px">加入链接（发给对方）</div>
+      <code style="font-size:14px;color:#3498db">192.168.1.5:3456</code>
+    </div>
+  </div>
+</div>

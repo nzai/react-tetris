@@ -1,0 +1,60 @@
+<h2>局域网连接方式</h2>
+<p class="subtitle">两个玩家在同一局域网内，如何建立连接和同步游戏状态？</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>房主模式（Host-Client）⭐ 推荐</h3>
+      <p>一个玩家点击<strong>"创建房间"</strong>，在本机启动 WebSocket 服务端；另一个玩家输入房主 IP <strong>"加入房间"</strong>。房主端运行权威游戏逻辑，客机只发送自己的操作、接收并渲染游戏状态。简单可靠，延迟极低。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>对等模式（P2P / WebRTC）</h3>
+      <p>两个浏览器直接建立 P2P 数据通道，无需中心节点。但需要 STUN/信令服务器辅助建立连接，对局域网来说过于复杂，且浏览器兼容性不如 WebSocket。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <h3>方案 A 架构示意</h3>
+</div>
+
+<div class="mockup">
+  <div class="mockup-header">房主模式数据流</div>
+  <div class="mockup-body" style="padding:24px;display:flex;flex-direction:column;align-items:center;gap:16px">
+    <div style="display:flex;gap:60px;align-items:center">
+      <div style="background:#1a1a2e;border-radius:8px;padding:20px 28px;text-align:center;border:1px solid #e74c3c">
+        <div style="font-size:18px;font-weight:700;color:#e74c3c;margin-bottom:8px">🏠 房主（Host）</div>
+        <div style="font-size:12px;color:#888;line-height:1.6">
+          运行完整游戏逻辑<br/>
+          WebSocket Server :3456<br/>
+          权威状态（Redux Store）
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="font-size:11px;color:#666">← 操作指令 →</div>
+        <div style="width:60px;height:2px;background:#555;position:relative">
+          <div style="position:absolute;right:-6px;top:-4px;color:#555">▶</div>
+        </div>
+        <div style="width:60px;height:2px;background:#555;position:relative">
+          <div style="position:absolute;left:-6px;top:-4px;color:#555">◀</div>
+        </div>
+        <div style="font-size:11px;color:#666">← 游戏状态 →</div>
+      </div>
+      <div style="background:#1a1a2e;border-radius:8px;padding:20px 28px;text-align:center;border:1px solid #3498db">
+        <div style="font-size:18px;font-weight:700;color:#3498db;margin-bottom:8px">🎮 客机（Client）</div>
+        <div style="font-size:12px;color:#888;line-height:1.6">
+          仅渲染 + 发送操作<br/>
+          连接到 192.168.x.x:3456<br/>
+          无游戏逻辑
+        </div>
+      </div>
+    </div>
+    <div style="background:#2d2d44;border-radius:6px;padding:12px 20px;font-size:12px;color:#aaa;max-width:500px;text-align:center">
+      <strong>同步内容：</strong>棋盘矩阵、双方活动方块位置/形状、next 预览、分数、游戏状态（开始/暂停/结束）
+    </div>
+  </div>
+</div>

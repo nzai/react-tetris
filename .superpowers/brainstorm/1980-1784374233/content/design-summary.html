@@ -1,0 +1,80 @@
+<h2>设计汇总：局域网双人模式</h2>
+<p class="subtitle">所有决策回顾 + 整体架构</p>
+
+<div class="section">
+  <h3>📋 已确定的设计决策</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:13px">
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">棋盘</td><td style="padding:8px 12px"><strong>12×20</strong>（单机 10×20），40px 格子不变</td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">合作</td><td style="padding:8px 12px"><strong>同时落块</strong>，各自操控自己的方块</td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">分数</td><td style="padding:8px 12px"><strong>共享</strong>分数 + 消行数</td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">死亡</td><td style="padding:8px 12px"><strong>任意一人触顶 → 双人结束</strong></td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">Next</td><td style="padding:8px 12px"><strong>各自独立</strong>预览队列</td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">速度</td><td style="padding:8px 12px"><strong>统一速度</strong></td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">连接</td><td style="padding:8px 12px"><strong>房主模式</strong>（Host WebSocket Server）</td></tr>
+    <tr style="border-bottom:1px solid #333"><td style="padding:8px 12px;color:#888">发现</td><td style="padding:8px 12px"><strong>二维码扫码</strong> + 手动链接兜底</td></tr>
+    <tr><td style="padding:8px 12px;color:#888">布局</td><td style="padding:8px 12px"><strong>顶部信息栏并排</strong></td></tr>
+  </table>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>🎮 启动流程</h3>
+</div>
+
+<div style="display:flex;align-items:center;justify-content:center;gap:24px;padding:20px;flex-wrap:wrap">
+  <div style="background:#2d2d44;border-radius:8px;padding:16px 20px;text-align:center;min-width:100px">
+    <div style="font-size:24px;margin-bottom:6px">🖥️</div>
+    <div style="font-size:13px;font-weight:600">启动页面</div>
+    <div style="font-size:11px;color:#888;margin-top:4px">选择模式</div>
+  </div>
+  <div style="color:#555;font-size:20px">→</div>
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="background:#1a3a1a;border-radius:8px;padding:12px 16px;text-align:center;border:1px solid #27ae60">
+      <div style="font-size:13px;font-weight:600;color:#2ecc71">单机模式</div>
+      <div style="font-size:10px;color:#888">现有逻辑不变</div>
+    </div>
+    <div style="background:#1a1a3a;border-radius:8px;padding:12px 16px;text-align:center;border:1px solid #2980b9">
+      <div style="font-size:13px;font-weight:600;color:#3498db">联机模式</div>
+      <div style="font-size:10px;color:#888">创建 / 加入房间</div>
+    </div>
+  </div>
+  <div style="color:#555;font-size:20px">→</div>
+  <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="background:#2d1a1a;border-radius:8px;padding:12px 16px;text-align:center;border:1px solid #e74c3c">
+      <div style="font-size:13px;font-weight:600;color:#e74c3c">创建房间</div>
+      <div style="font-size:10px;color:#888">启动 WS Server → 显示二维码</div>
+    </div>
+    <div style="background:#1a2d1a;border-radius:8px;padding:12px 16px;text-align:center;border:1px solid #27ae60">
+      <div style="font-size:13px;font-weight:600;color:#2ecc71">加入房间</div>
+      <div style="font-size:10px;color:#888">扫码 / 输入链接 → 连接 Host</div>
+    </div>
+  </div>
+  <div style="color:#555;font-size:20px">→</div>
+  <div style="background:#2d2d1a;border-radius:8px;padding:16px 20px;text-align:center;min-width:100px;border:1px solid #f39c12">
+    <div style="font-size:24px;margin-bottom:6px">🎮</div>
+    <div style="font-size:13px;font-weight:600;color:#f1c40f">12×20 双人游戏</div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:24px">
+  <h3>🏗️ 整体架构</h3>
+</div>
+
+<div class="mockup">
+  <div class="mockup-header">系统分层</div>
+  <div class="mockup-body" style="padding:20px">
+    <div style="display:flex;flex-direction:column;gap:12px;font-size:12px">
+      <div style="background:#2d1a2d;border-radius:6px;padding:10px 16px;border:1px solid #9b59b6">
+        <strong style="color:#9b59b6">UI 层</strong> — 模式选择页 · 创建/加入房间 · 双人棋盘 · 二维码展示
+      </div>
+      <div style="background:#2d2d1a;border-radius:6px;padding:10px 16px;border:1px solid #f39c12">
+        <strong style="color:#f39c12">网络层（新增）</strong> — WebSocket Server/Client · 消息序列化 · 房主权威同步
+      </div>
+      <div style="background:#1a2d2d;border-radius:6px;padding:10px 16px;border:1px solid #1abc9c">
+        <strong style="color:#1abc9c">游戏逻辑层（改造）</strong> — 双 Block 实例 · 12 列碰撞检测 · 双人状态机
+      </div>
+      <div style="background:#1a1a2d;border-radius:6px;padding:10px 16px;border:1px solid #3498db">
+        <strong style="color:#3498db">数据层（改造）</strong> — Redux Store 扩展双人字段 · Immutable.js
+      </div>
+    </div>
+  </div>
+</div>

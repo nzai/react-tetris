@@ -1,0 +1,59 @@
+<h2>20×20 棋盘如何适配屏幕？</h2>
+<p class="subtitle">当前格子 40×40px。20 列意味着棋盘宽度从 420px 翻倍到 840px。怎么处理？</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>缩小格子到 25px ⭐ 推荐</h3>
+      <p>格子从 40px → <strong>25px</strong>（含边距约 27px/格）。20 列棋盘约 540px 宽，整体容器约 620px——比现在的 500px 只宽了一点，手机竖屏缩放后仍然可用。代价是格子小了些，但俄罗斯方块不需要精细操作。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>缩小格子到 30px</h3>
+      <p>格子 30px（含边距约 32px/格）。20 列棋盘约 640px 宽，容器约 720px。折中方案——桌面端舒服，手机端缩放后偏小但能玩。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>保持 40px，依赖缩放</h3>
+      <p>格子不变，容器约 900px 宽。桌面端（1920px 宽）完全没问题。手机上靠 CSS scale 缩小，20 列在手机上会缩到约 0.4 倍——能玩但体验一般。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <h3>尺寸对比（同比例）</h3>
+</div>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">方案 A：25px 格子 → 容器 ~620px</div>
+    <div class="mockup-body" style="padding:16px;display:flex;justify-content:center">
+      <div style="background:#1a1a2e;padding:4px;border:2px solid #000;width:fit-content">
+        <div style="display:grid;grid-template-columns:repeat(20,15px);grid-template-rows:repeat(10,15px);gap:0">
+          <div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div>
+          <div style="width:15px;height:15px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:15px;height:15px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:15px;height:15px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#3498db;border:1px solid #2980b9"></div><div style="width:15px;height:15px;background:#3498db;border:1px solid #2980b9"></div><div style="width:15px;height:15px;background:#3498db;border:1px solid #2980b9"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div><div style="width:15px;height:15px;background:#2d2d44;border:1px solid #444"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">方案 C：40px 格子 → 容器 ~900px</div>
+    <div class="mockup-body" style="padding:16px;display:flex;justify-content:center">
+      <div style="background:#1a1a2e;padding:4px;border:2px solid #000;width:fit-content">
+        <div style="display:grid;grid-template-columns:repeat(20,22px);grid-template-rows:repeat(10,22px);gap:0">
+          <div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div>
+          <div style="width:22px;height:22px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:22px;height:22px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:22px;height:22px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#3498db;border:1px solid #2980b9"></div><div style="width:22px;height:22px;background:#3498db;border:1px solid #2980b9"></div><div style="width:22px;height:22px;background:#3498db;border:1px solid #2980b9"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div><div style="width:22px;height:22px;background:#2d2d44;border:1px solid #444"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;padding:12px 16px;background:#2d2d44;border-radius:6px;font-size:13px;line-height:1.6">
+  <strong>💡 提示：</strong>不管选哪种，单机模式（10×20）可以保留原来的 40px 格子，只有联机模式（20×20）才用缩小后的格子。两种模式各自独立布局。
+</div>

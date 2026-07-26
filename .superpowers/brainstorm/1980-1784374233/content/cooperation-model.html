@@ -1,0 +1,81 @@
+<h2>双人同棋盘 — 合作模式怎么玩？</h2>
+<p class="subtitle">两个玩家各自控制一个方块，在同一张更大的棋盘上协作。但具体怎么协作？</p>
+
+<div class="options">
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>双人并行 — 同时落块</h3>
+      <p>两个玩家<strong>同时</strong>各有一个活动方块在下落，各自独立操控（旋转/移动/硬降），互不干扰。棋盘宽度加倍（如 20×20），双方在各自的"半场"活动但方块可以跨过中线。消行规则不变，共享分数。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>双人交替 — 轮流落块</h3>
+      <p>同一时刻只有一个活动方块，两个玩家<strong>轮流</strong>控制。玩家A 落块后轮到玩家B，交替进行。棋盘适度加大（如 12×20 或 14×20），需要商量策略——A 落的块会直接影响 B 的决策。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>主副协作 — 一人一块拼合</h3>
+      <p>棋盘加大（如 20×24），两个玩家各自从<strong>棋盘两端</strong>向中间堆放。玩家A 从底部向上堆，玩家B 从顶部向下堆（或左右分区）。消行条件更苛刻——需要两人配合让行正好填满。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <h3>直观对比</h3>
+</div>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">方案 A：并行双人（20×20）</div>
+    <div class="mockup-body">
+      <div style="display:flex;gap:0;justify-content:center;padding:16px">
+        <div style="width:42px;height:840px;background:#1a1a2e;border:1px solid #333;display:flex;flex-direction:column-reverse">
+          <!-- 20 rows for each column -->
+          <div style="display:flex;flex-direction:column-reverse;height:100%">
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+          </div>
+        </div>
+        <div style="width:2px;background:rgba(255,215,0,0.5);margin:0 8px" title="中线"></div>
+        <div style="width:42px;height:840px;background:#1a1a2e;border:1px solid #333;display:flex;flex-direction:column-reverse">
+          <div style="display:flex;flex-direction:column-reverse;height:100%">
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:60px;padding:8px 0;font-size:13px">
+        <span style="color:#e74c3c">🔴 玩家A 方块</span>
+        <span style="color:#3498db">🔵 玩家B 方块</span>
+      </div>
+    </div>
+  </div>
+  <div class="mockup">
+    <div class="mockup-header">方案 B：交替单人（14×20）</div>
+    <div class="mockup-body">
+      <div style="display:flex;justify-content:center;padding:16px">
+        <div style="width:42px;height:840px;background:#1a1a2e;border:1px solid #333;display:flex;flex-direction:column-reverse">
+          <div style="display:flex;flex-direction:column-reverse;height:100%">
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+            <div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#e74c3c;border-top:1px solid #c0392b"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div><div style="height:42px;background:#3498db;border-top:1px solid #2980b9"></div><div style="height:42px;background:#2d2d44;border-top:1px solid #444"></div>
+          </div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:center;gap:40px;padding:8px 0;font-size:13px">
+        <span style="color:#e74c3c">🔴 轮到A</span>
+        <span style="color:#3498db">→ 🔵 轮到B</span>
+      </div>
+    </div>
+  </div>
+</div>

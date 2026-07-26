@@ -1,0 +1,78 @@
+<h2>双人界面布局</h2>
+<p class="subtitle">12×20 棋盘（~512px 宽），需要展示两个玩家的 next 预览 + 共享分数。怎么排？</p>
+
+<div class="options">
+  <div class="option" data-choice="layout-topbar" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>顶部信息栏并排 ⭐ 推荐</h3>
+      <p>延续现有布局风格。顶部信息栏左右分区：<strong>玩家A（next + 消除行数）</strong>在左，<strong>共享分数</strong>居中，<strong>玩家B（next + 消除行数）</strong>在右。棋盘在下方。改动最小，一目了然。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="layout-sides" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>左右侧边栏</h3>
+      <p>棋盘居中，<strong>玩家A 信息在左侧</strong>竖直排列，<strong>玩家B 信息在右侧</strong>竖直排列。视觉对称，但容器会变宽（棋盘 512px + 两侧各 ~100px ≈ 700px+），手机端更局促。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="layout-stacked" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>上下分区</h3>
+      <p>玩家A 信息在棋盘上方，玩家B 信息在棋盘下方。竖直方向拉长，不适合已有的 20 行高度。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="margin-top:32px">
+  <h3>方案 A 示意（延续现有风格）</h3>
+</div>
+
+<div class="mockup">
+  <div class="mockup-header">双人模式界面草图</div>
+  <div class="mockup-body" style="padding:20px;display:flex;flex-direction:column;align-items:center;gap:0">
+    <!-- Top bar -->
+    <div style="width:520px;background:#1a1a2e;border-radius:6px 6px 0 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;border:1px solid #333">
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:90px">
+        <span style="font-size:10px;color:#e74c3c">🔴 玩家A</span>
+        <div style="background:#2d2d44;border-radius:4px;padding:4px 8px;font-size:11px;color:#fff">NEXT: T</div>
+        <span style="font-size:10px;color:#888">消行: 12</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <span style="font-size:10px;color:#888">总分</span>
+        <span style="font-size:22px;font-weight:700;color:#f1c40f">12,400</span>
+        <span style="font-size:10px;color:#888">速度 Lv.3</span>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;min-width:90px">
+        <span style="font-size:10px;color:#3498db">🔵 玩家B</span>
+        <div style="background:#2d2d44;border-radius:4px;padding:4px 8px;font-size:11px;color:#fff">NEXT: L</div>
+        <span style="font-size:10px;color:#888">消行: 8</span>
+      </div>
+    </div>
+    <!-- Board -->
+    <div style="width:520px;height:280px;background:#0d0d1a;border:2px solid #333;border-top:none;display:flex;justify-content:center;align-items:flex-end;padding:8px">
+      <div style="display:grid;grid-template-columns:repeat(12,28px);grid-template-rows:repeat(6,28px);gap:1px">
+        <!-- Row 6 (bottom) -->
+        <div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div>
+        <!-- Row 5 -->
+        <div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div>
+        <!-- Row 4 -->
+        <div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div>
+        <!-- Row 3 -->
+        <div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div>
+        <!-- Row 2 -->
+        <div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div>
+        <!-- Row 1 -->
+        <div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#e74c3c;border:1px solid #c0392b"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#3498db;border:1px solid #2980b9"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div><div style="width:28px;height:28px;background:#2d2d44;border:1px solid #444"></div>
+      </div>
+    </div>
+    <!-- Bottom bar icons -->
+    <div style="width:520px;background:#1a1a2e;border-radius:0 0 6px 6px;padding:8px 16px;display:flex;justify-content:center;gap:16px;border:1px solid #333;border-top:none">
+      <span style="font-size:10px;color:#888">🔊 音效</span>
+      <span style="font-size:10px;color:#888">👻 影子</span>
+      <span style="font-size:10px;color:#888">🎨 主题</span>
+      <span style="font-size:10px;color:#888">⚙️ 设置</span>
+    </div>
+  </div>
+</div>

@@ -35,8 +35,11 @@ class SettingsDialog extends React.Component {
     };
 
     return (
-      <div className={style.overlay} onMouseDown={onClose}>
-        <div className={style.dialog} onMouseDown={(e) => e.stopPropagation()}>
+      <div className={style.overlay} onClick={() => {
+        if (this.props.openTime && Date.now() - this.props.openTime < 500) return;
+        onClose();
+      }}>
+        <div className={style.dialog} onMouseDown={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
           <button className={style.closeBtn} onClick={onClose}>×</button>
           <div className={style.list}>
             <div className={style.row}>
@@ -75,6 +78,7 @@ SettingsDialog.propTypes = {
   ghost: propTypes.bool.isRequired,
   onConfirm: propTypes.func.isRequired,
   onClose: propTypes.func.isRequired,
+  openTime: propTypes.number,
 };
 
 export default SettingsDialog;
